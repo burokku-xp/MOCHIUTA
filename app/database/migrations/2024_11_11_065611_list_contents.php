@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('list_contents', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->tinyInteger('role')->default('1');
-            $table->rememberToken();
+            $table->integer('points');
+            $table->string('comment', '500')->nullable();
+            $table->string('music_data_path', '500')->nullable()->comment('ストレージパスを格納');
+            $table->integer('list_id');
+            $table->integer('songs_id');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('list_contents');
     }
 };

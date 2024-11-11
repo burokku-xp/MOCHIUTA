@@ -15,7 +15,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    @vite(['resources/js/app.js'])<!--bootstrap使用用-->
+    @vite(['resources/js/app.js'])<!--bootstrap使用-->
 
 </head>
 <body>
