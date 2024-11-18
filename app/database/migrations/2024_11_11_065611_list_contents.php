@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('comment', '500')->nullable();
             $table->string('music_data_path', '500')->nullable()->comment('ストレージパスを格納');
             $table->integer('list_id');
-            $table->integer('songs_id');
+            $table->integer('song_id');
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DisplayController;
 use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,11 +18,11 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', [DisplayController::class, 'title']);
+Route::get('/', [DisplayController::class, 'title'])->name('title');
+
 Auth::routes();
-Route::group(['middleware' => ['auth']],function () {
+Route::group(['middleware' => ['auth']], function () {
     Route::get('/mypage', [DisplayController::class, 'mypage'])->name('mypage');
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-

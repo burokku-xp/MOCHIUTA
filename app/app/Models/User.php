@@ -50,4 +50,14 @@ class User extends Authenticatable
     {
         $this->notify(new PasswordResetNotification($token, new ResetPassMail()));
     }
+
+    public function song_list()
+    {
+        return $this->hasMany('App\Models\Song_list');
+    }
+
+    public function favorite_user()
+    {
+        return $this->hasMany('App\Models\Favorite_user');
+    }
 }

@@ -1,13 +1,41 @@
-@extends('layouts.app')
+@extends('layouts.header')
 @section('content')
-<a href="#" id="logout" class="mt-navbar-item">ログアウト</a>
-<form id="logout-form" action="{{ route('logout')}}" method="POST" style="display: none;">
-    @csrf
-</form>
-<script>
-    document.getElementById('logout').addEventListener('click', function(event) {
-        event.preventDefault();
-        document.getElementById('logout-form').submit();
-    });
-</script>
-@endsection
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <div class='text-center'>おすすめ</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <div class='text-center'>お気に入りユーザー</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <div class='text-center'>リスト一覧</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endsection

@@ -14,7 +14,7 @@
                     </div>
                     @endif
 
-                    <form method="POST" action="{{ route('password.email') }}">
+                    <form id="forgot-password-form" method="POST" action="{{ route('password.email') }}">
                         @csrf
 
                         <div class="row mb-3">
@@ -33,6 +33,7 @@
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
+
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('メール送信') }}
                                 </button>
