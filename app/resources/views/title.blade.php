@@ -39,6 +39,11 @@
                     新規登録はコチラ
                 </a>
             </div>
+            <div class="d-flex justify-content-center">
+                <a href="{{ route('test') }}">
+                    テスト用
+                </a>
+            </div>
         </div>
 </body>
 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Song_list extends Model
 {
     use HasFactory;
+    protected $fillable = ['name', 'is_private'];
 
     public function list_content()
     {

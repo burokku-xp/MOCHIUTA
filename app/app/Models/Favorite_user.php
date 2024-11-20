@@ -8,6 +8,4 @@ use Illuminate\Database\Eloquent\Model;
 class Favorite_user extends Model
 {
     use HasFactory;
-
-    
 }
