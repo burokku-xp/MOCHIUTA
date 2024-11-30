@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use SpotifyWebAPI\SpotifyWebApi;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Crypt;
+use SpotifyWebAPI\Request as SpotifyWebAPIRequest;
 
 require '../vendor/autoload.php';
 
@@ -23,7 +24,8 @@ class AccessTokenController extends Controller
         ];
 
         $headers = [
-            'Content-Type' => 'application/x-www-form-urlencoded'
+            'Content-Type' => 'application/x-www-form-urlencoded',
+            'Accept-Language' => 'ja'
         ];
 
         $options = [

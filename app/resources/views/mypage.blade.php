@@ -43,7 +43,9 @@
                         <tbody>
                             @foreach($song_list as $list)
                             <tr>
-                                <th scope="col">{{ $list['name']}}</th>
+                                <th scope="col">
+                                    <a href="{{ route('song.detail',['song_list' => $list['id']]) }}">{{ $list['name']}}</a>
+                                </th>
                                 <th scope="col">
                                     @if($list['is_private']==0)
                                     公開
@@ -67,7 +69,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form id="listform" action="{{ route('list.Regist')}}" method="post">
+                                <form id="form" action="{{ route('list.Regist')}}" method="post">
                                     @csrf
                                     <div class="panel-body">
                                         @if($errors->any())
@@ -80,14 +82,14 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="list-name" class="col-form-label">リスト名</label>
-                                        <input type="text" class="form-control" id="list-name" name="name" required maxlength="20">
+                                        <input type="text" class="form-control listname" name="name" required maxlength="20">
                                     </div>
                                     <div class="mb-3">
                                         <input type="radio" name="is_private" value="公開">公開
                                         <input type="radio" name="is_private" value="非公開" checked="checked">非公開
                                     </div>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
-                                    <button id="sendbutton" type="submit" class="btn btn-primary" formaction="{{ route('list.Regist')}}">送信</button>
+                                    <button type="submit" class="btn btn-primary send-button" formaction="{{ route('list.Regist')}}">送信</button>
                                 </form>
                             </div>
                         </div>
