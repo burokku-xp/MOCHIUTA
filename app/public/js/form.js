@@ -34,7 +34,7 @@ function detail() {
     //削除ボタン処理
     change_flgs.forEach(function (change_flg) {
         let delete_button = change_flg.querySelector(".delete_btn");
-        let destroy_url = '/song_destroy'
+        let destroy_url = "/song_destroy"
         let edit_button = change_flg.querySelector(".edit_btn");
         let edit_url = '/song_edit'
 
@@ -44,7 +44,7 @@ function detail() {
             if (deleteConfirm == true) {
                 //ボタンを非活性に
                 delete_button.disabled = true;
-                ajax(put, $(this), destroy_url, function () {
+                ajax('post' ,$(this), destroy_url, function () {
                     change_flg.remove();
                 });
             } else {
@@ -109,12 +109,13 @@ function song_search() {
 }
 
 //非同期通信用関数
-function ajax(type, request_id, url, func) {
+function ajax(type,request_id, url, func) {
     /*request_id = 親要素のHTMLid要素
       url = ルートパス
       func = Ajax処理後に行う */
     var clickEle = $(request_id);
     var userID = clickEle.attr("data-id");
+    console.log($('meta[name="csrf-token"]').attr("content"))
     $.ajax({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
