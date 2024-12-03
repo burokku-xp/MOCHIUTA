@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\ErrorHandler\Debug;
 
 class List_content extends Model
 {
@@ -43,8 +45,14 @@ class List_content extends Model
         return $this::find($song_id->id)->delete();
     }
 
-    public function songEdit($song_id)
+    public function songEdit($song_id, $path)
     {
-        return ;/*$this::find($song_id->id)->*/
+        $song = $this::find($song_id->id);
+        $song->points = $song_id->points;
+        $song->comment = $song_id->comment;
+        if (!($path === null)) {
+            $song->music_data_path = $path;
+        }
+        return $song->save();
     }
 }

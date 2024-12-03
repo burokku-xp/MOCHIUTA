@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\List_content;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\ErrorHandler\Debug;
 
 class AjaxController extends Controller
 {
@@ -15,8 +17,14 @@ class AjaxController extends Controller
 
     public function songEdit(Request $request)
     {
+        if (!($request->file('mp3_data') === null)) {
+            //音声ファイル名をハッシュ化してパスを取得し保存
+            $path = $request->file('mp3_data')->storeAs('', $request->file('mp3_data')->hashName());
+        } else {
+            $path = null;
+        }
         $songEdit = new List_content;
-        $songEdit->songEdit($request);
+        $songEdit->songEdit($request, $path);
     }
     //
 }

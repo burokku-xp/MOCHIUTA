@@ -67,20 +67,25 @@
                                                                 <div class="mb-3">
                                                                     <label for="song-point" class="col-form-label"
                                                                         required>点数</label>
-                                                                    <input id="song-point" type="text"
-                                                                        class="form-control" name="points"
-                                                                        value="{{ $list_content['points'] }}">
+                                                                    <input id="song-point" type="number" min="0"
+                                                                        max="100" class="form-control" name="points"
+                                                                        value="{{ $list_content['points'] }}" required>
                                                                     <label for="mp3_data"
                                                                         class="col-form-label">音声ファイル登録</label>
-                                                                    <input id="comment" type="file"
+                                                                    <input id="audio" type="file"
                                                                         class="form-control" name="mp3_data"
                                                                         accept="audio/*">
                                                                     <label for="song-comment"
                                                                         class="col-form-label">コメント</label>
                                                                     <textarea id="song-comment" class="form-control" name="comment">{{ $list_content['comment'] }}</textarea>
                                                                     <button id="edit-button" type="button"
-                                                                        class="btn btn-primary edit_btn"
-                                                                        formaction="#">編集</button>
+                                                                        data-id="{{ $list_content['id'] }}"
+                                                                        class="btn btn-primary edit_btn" formaction="#">編集
+                                                                        <div id="load-edit" class="spinner-border d-none"
+                                                                            role="status"
+                                                                            style="width: 1rem; height: 1rem;">
+                                                                        </div>
+                                                                    </button>
                                                                 </div>
                                                             </form>
                                                             <button type="button" class="btn btn-secondary"

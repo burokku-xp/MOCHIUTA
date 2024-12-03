@@ -39,4 +39,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/song_edit', [AjaxController::class, 'songEdit'])->name("song.edit");
 });
 
+Route::post('/test', [TestController::class, 'test'])->name("test");
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

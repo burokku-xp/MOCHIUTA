@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 class Testcontroller extends Controller
 {
-    public function test()
+    public function test($request)
     {
-        return view('test');
+        return view('test',['tests'=>$request,]);
     }
 
     //

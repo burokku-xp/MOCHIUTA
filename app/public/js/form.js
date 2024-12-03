@@ -31,7 +31,7 @@ function detail() {
     let comment_btn = document.querySelectorAll(".btn-comment");
     let change_flgs = document.querySelectorAll(".change-flg");
 
-    //削除ボタン処理
+
     change_flgs.forEach(function (change_flg) {
         let delete_button = change_flg.querySelector(".delete_btn");
         let destroy_url = "/song_destroy"
@@ -40,11 +40,17 @@ function detail() {
 
         //削除ボタン処理
         delete_button.addEventListener("click", function () {
+            var clickEle = $(this);
+            var user_id = clickEle.attr("data-id")
+            var user_data = {
+                id: user_id
+            };
             var deleteConfirm = confirm("削除してもよろしいでしょうか?");
             if (deleteConfirm == true) {
                 //ボタンを非活性に
                 delete_button.disabled = true;
-                ajax('post' ,$(this), destroy_url, function () {
+                change_flg.querySelector(".btn-warning").disabled = true;
+                ajax('post', user_data, destroy_url, function () {
                     change_flg.remove();
                 });
             } else {
@@ -56,12 +62,31 @@ function detail() {
 
         //編集ボタン処理
         edit_button.addEventListener("click", function () {
-            delete_button.disabled = true;
-            ajax(put, $(this), edit_url, function () {
-                delete_button.disabled = false;
+            var clickEle = $(this);
+            var user_id = clickEle.attr("data-id");
+            var point = change_flg.querySelector("#song-point").value
+            var comment = change_flg.querySelector("#song-comment").value
+            var audioInput = change_flg.querySelector("#audio")
+            console.log(audioInput.files[0])
+
+            // 設定欄に入力された情報を取得する
+            var formData = new FormData();
+            formData.append("id", user_id);
+            formData.append("points", point);
+            formData.append("comment", comment);
+            if (!(audioInput.files.length === 0)) {
+                formData.append("mp3_data", audioInput.files[0]);
+            }
+
+            edit_button.disabled = true;//ボタンを非活性に
+            change_flg.querySelector(".spinner-border").classList.remove('d-none')//ロードアイコン表示
+            ajax('post', formData, edit_url, function () {
+                edit_button.disabled = false;//ボタンを再度活性化
+                change_flg.querySelector(".spinner-border").classList.add('d-none')//ロードアイコン非表示
             })
         });
     })
+
 
     //コメント開閉ボタンのコメント切替
     comment_btn.forEach(function (comment_button) {
@@ -109,13 +134,11 @@ function song_search() {
 }
 
 //非同期通信用関数
-function ajax(type,request_id, url, func) {
-    /*request_id = 親要素のHTMLid要素
+function ajax(type, request, url, func) {
+    /*request = 親要素のinput要素
       url = ルートパス
-      func = Ajax処理後に行う */
-    var clickEle = $(request_id);
-    var userID = clickEle.attr("data-id");
-    console.log($('meta[name="csrf-token"]').attr("content"))
+      func = Ajax処理後に行う処理 */
+
     $.ajax({
         headers: {
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -123,12 +146,12 @@ function ajax(type,request_id, url, func) {
         type: type,
         url: url,
         dataType: "text",
-        data: {
-            id: userID,
-        },
+        data: request,
+        processData: false,  // jQueryがデータを自動的に処理しないように
+        contentType: false,
+        success: func,
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert("通信エラー: " + textStatus + " - " + errorThrown);
+        }
     })
-        .done(func)
-        .fail(function () {
-            alert("エラーが起きました");
-        });
 }
