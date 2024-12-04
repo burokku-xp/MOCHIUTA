@@ -25,6 +25,10 @@ class AjaxController extends Controller
         }
         $songEdit = new List_content;
         $songEdit->songEdit($request, $path);
+
+        return response()->json([
+            'updatedContent' => $path
+        ]);
     }
     //
 }

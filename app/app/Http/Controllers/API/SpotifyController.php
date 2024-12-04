@@ -26,7 +26,7 @@ class SpotifyController extends Controller
     {
         $options = (
             [
-                'limit' => 30,     // 検索結果の数
+                'limit' => 15,     // 検索結果の数
                 'offset' => 0,     // 検索結果の開始位置
                 'market' => 'JP',  // 市場（オプション、US など）
                 'locale' => 'ja-JP' //言語設定
@@ -35,6 +35,29 @@ class SpotifyController extends Controller
         $result = $this->token->search($song_name, 'track', $options);
         // アーティスト情報を整形
         return collect($result->tracks->items)->map(function ($artist) {
+            return [
+                'artist' => $artist->artists["0"]->name,
+                'name' => $artist->name,
+                'track_id' => $artist->id
+            ];
+        });
+    }
+
+    public function artist_serch($artist_name)
+    {
+        $options = (
+            [
+                'limit' => 15,     // 検索結果の数
+                'offset' => 0,     // 検索結果の開始位置
+                'market' => 'JP',  // 市場（オプション、US など）
+                'locale' => 'ja-JP' //言語設定
+            ]
+        );
+
+        $result = $this->token->search($artist_name, 'artist', $options)->artists->items["0"]->id;
+        $result = $this->token->getArtistTopTracks($result, $options);
+        // アーティスト情報を整形
+        return collect($result->tracks)->map(function ($artist) {
             return [
                 'artist' => $artist->artists["0"]->name,
                 'name' => $artist->name,

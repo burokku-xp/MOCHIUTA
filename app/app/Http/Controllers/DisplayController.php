@@ -46,5 +46,18 @@ class DisplayController extends Controller
             'id' => $id
         ]);
     }
+
+    public function artistSearch(Song_list $song_list, Request $request)
+    {
+        $id = $song_list->id;
+        $artist_name = $request->artist_name;
+        $artist_search = new SpotifyController;
+        $artist_search = $artist_search->artist_serch($artist_name);
+
+        return view('song_searchResult', [
+            'song_searchs' => $artist_search,
+            'id' => $id
+        ]);
+    }
     //
 }

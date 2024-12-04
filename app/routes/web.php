@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => 'can:view,song_list'], function () {
         Route::get('/song_list/{song_list}/detail', [DisplayController::class, 'songDetail'])->name("song.detail");
         Route::post('/song_searchResult/{song_list}/search', [DisplayController::class, 'songSearch'])->name("song.search");
+        Route::post('/artist_searchResult/{song_list}/search', [DisplayController::class, 'artistSearch'])->name("artist.search");
         Route::post('/song_list/{song_list}/detail', [RegistrationController::class, 'listContentRegist'])->name("song.regist");
     });
 
