@@ -32,4 +32,16 @@ class Song_list extends Model
 
         Auth::user()->song_list()->save($this);
     }
+
+    public function user_listSearch($datas)
+    {
+        foreach ($datas as $data) {
+            $lists = $this->where("is_private", "0")->where("user_id", $data["user_id"])->get();
+            foreach ($lists as $list) {
+                $datas[$data["user_id"]]["list_content"][$list->id]["list_id"] = $list->id;
+                $datas[$data["user_id"]]["list_content"][$list->id]["list_name"] = $list->name;
+            }
+        }
+        return $datas;
+    }
 }

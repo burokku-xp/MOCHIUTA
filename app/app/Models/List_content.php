@@ -40,6 +40,22 @@ class List_content extends Model
             ->get();
     }
 
+    public function searchUserListDetail($song_list)
+    {
+        return $this::join('songs', 'list_contents.song_id', '=', 'songs.id')
+            ->where('list_id', $song_list->id)
+            ->select('list_contents.id', 'points', 'music_data_path', 'songs.id as song_id', 'songs.name', 'songs.artist')
+            ->get();
+    }
+
+    public function searchUserDetail($song_list)
+    {
+        return $this::join('songs', 'list_contents.song_id', '=', 'songs.id')
+        ->where('list_id', $song_list->id)
+            ->select('list_contents.id', 'points', 'comment', 'music_data_path', 'songs.id as song_id', 'songs.name', 'songs.artist')
+            ->get();
+    }
+
     public function songDelete($song_id)
     {
         return $this::find($song_id->id)->delete();

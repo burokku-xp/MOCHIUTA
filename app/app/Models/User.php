@@ -60,4 +60,16 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Favorite_user');
     }
+
+    public function user_search($user_name)
+    {
+        //ユーザー名部分一致検索
+        $user_search = $this->where("role", "1")->where("name", "LIKE", "%" . $user_name . "%");
+        $names = $user_search->get();
+        foreach ($names as $name) {
+            $data[$name->id]["user_id"] = $name->id;
+            $data[$name->id]["user_name"] = $name->name;
+        }
+        return $data;
+    }
 }

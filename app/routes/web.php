@@ -38,6 +38,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('/song_destroy', [AjaxController::class, 'songDestroy'])->name("song.destroy");
     Route::post('/song_edit', [AjaxController::class, 'songEdit'])->name("song.edit");
+    Route::post('/user_searchResult', [DisplayController::class, 'userSearchResult'])->name("user.searchResult");
+    Route::get('/user_searchResult/{song_list}', [DisplayController::class, 'userSearchList'])->name("search.list");
 });
 
 Route::post('/test', [TestController::class, 'test'])->name("test");

@@ -14,7 +14,6 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
@@ -49,9 +48,16 @@
         <nav class="navbar navbar-dark" style="background-color:#ee7800">
             <div>
                 <a class="my-navbar-item text-light link-offset-3-hover link-underline link-underline-dark link-underline-opacity-0 link-underline-opacity-75-hover"
-                    href="#">マイページ</a>
+                    href="{{ url('/mypage')}}">マイページ</a>
                 <a class="my-navbar-item text-light link-offset-3-hover link-underline link-underline-dark link-underline-opacity-0 link-underline-opacity-75-hover"
-                    href="#">ユーザー検索</a>
+                    data-bs-toggle="collapse" data-bs-target="#navbarTogglerUserSearch" aria-controls="navbarTogglerUserSearch" aria-expanded="false" aria-label="Toggle navigation" href="#">ユーザー検索</a>
+                <div class="collapse navbar-collapse" id="navbarTogglerUserSearch">
+                    <form class="d-flex" role="search" action="{{ route('user.searchResult')}}" method="post">
+                        @csrf
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="userSearch">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
             </div>
         </nav>
         <main class="py-4">
