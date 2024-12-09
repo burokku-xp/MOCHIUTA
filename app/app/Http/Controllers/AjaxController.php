@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Favorite_user;
 use App\Models\List_content;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -29,6 +30,20 @@ class AjaxController extends Controller
         return response()->json([
             'updatedContent' => $path
         ]);
+    }
+
+    public function favoriteUser(Request $request)
+    {
+        $Favorite_user = new Favorite_user;
+        $Favorite_user = $Favorite_user->Regist($request["id"]);
+        return;
+    }
+
+    public function favoriteUserDelete(Request $request)
+    {
+        $Favorite_user = new Favorite_user;
+        $Favorite_user = $Favorite_user->Delete_id($request["id"]);
+        return;
     }
     //
 }

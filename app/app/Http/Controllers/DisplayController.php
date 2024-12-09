@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\SpotifyController;
 use App\Models\List_content;
 use App\Models\Song_list;
+use App\Models\Favorite_user;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -21,9 +22,24 @@ class DisplayController extends Controller
 
     public function mypage()
     {
+        //ログインユーザーのリスト
         $songListAll = Auth::user()->song_list()->get();
+
+        //お気に入りユーザーと公開リスト
+        $favorite_user_data = Auth::user()->favorite_user()->get()->toArray();
+        $favorite_user = new User();
+        $favorite_user = $favorite_user->mypage($favorite_user_data);
+
+        $song_list = new Song_list;
+        $favorite_user = $song_list->user_listSearch($favorite_user);
+
+        //ログインユーザーへのおすすめ楽曲
+        $suggest_song = new SpotifyController;
+        $suggest_song = $suggest_song->suggest_song();
+
         return view('mypage', [
-            'song_list' => $songListAll
+            'song_list' => $songListAll,
+            'favorite_users' => $favorite_user
         ]);
     }
 
@@ -41,6 +57,7 @@ class DisplayController extends Controller
     {
         $list_content = new List_content;
         $list_content = $list_content->searchUserListDetail($song_list);
+
         return view('user_searchlist', [
             'list_contents' => $list_content,
             'song_detail' => $song_list
@@ -81,6 +98,7 @@ class DisplayController extends Controller
 
         $song_list = new Song_list;
         $user_search = $song_list->user_listSearch($user_search);
+
         return view('user_searchResult', [
             'user_searchs' => $user_search
         ]);

@@ -5,9 +5,11 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\AccessTokenController;
 use SpotifyWebAPI\SpotifyWebAPI;
-use SpotifyWebAPI\Session;
-use Illuminate\Http\Request;
-use Illuminate\Support\Js;
+use SpotifyWebAPI\SpotifyWebAPIException;
+use Illuminate\Support\Facades\Auth;
+use App\Models\List_content;
+use App\Models\Song;
+use App\Models\Song_list;
 
 class SpotifyController extends Controller
 {
@@ -64,6 +66,13 @@ class SpotifyController extends Controller
                 'track_id' => $artist->id
             ];
         });
+    }
+
+    public function suggest_song()
+    {
+
+
+        return;
     }
     //
 }

@@ -28,7 +28,7 @@ class RegistrationController extends Controller
     {
         // 登録する曲がsongsテーブルに登録されているかのチェック→登録なければ登録してIDを拾う／あればそのままIDを拾う
         $songRegist = new Song();
-        $songRegist['song_id'] = $songRegist->songRegist($request->name, $request->artist);
+        $songRegist['song_id'] = $songRegist->songRegist($request->name, $request->artist ,$request->track_id);
         $songRegist['list_id'] = $song_list->id;
         if (!($request->file('mp3_data') === null)) {
             //音声ファイル名をハッシュ化してパスを取得し保存

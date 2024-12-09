@@ -9,6 +9,7 @@ use App\Notifications\PasswordResetNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -66,10 +67,42 @@ class User extends Authenticatable
         //ユーザー名部分一致検索
         $user_search = $this->where("role", "1")->where("name", "LIKE", "%" . $user_name . "%");
         $names = $user_search->get();
+        $favorite_user = Auth::user()->Favorite_user()->get();
         foreach ($names as $name) {
             $data[$name->id]["user_id"] = $name->id;
             $data[$name->id]["user_name"] = $name->name;
+            $data[$name->id]["favorite"] = "false";
+            foreach ($favorite_user as $favorite) {
+                if ($name->id === $favorite->favoriteuser_id) {
+                    $data[$name->id]["favorite"] = "true";
+                    break;
+                } else {
+                    $data[$name->id]["favorite"] = "false";
+                }
+            }
         }
         return $data;
+    }
+
+    public function mypage($favorite_user_data)
+    {
+        $favorite_user = Auth::user()->Favorite_user()->get();
+        foreach ($favorite_user_data as $data) {
+            $gets = $this->where("id", $data["favoriteuser_id"])->get();
+            foreach ($gets as $get) {
+                $result[$get->id]["user_id"] = $get->id;
+                $result[$get->id]["user_name"] = $get->name;
+                $result[$get->id]["favorite"] = "false";
+                foreach ($favorite_user as $favorite) {
+                    if ($get->id === $favorite->favoriteuser_id) {
+                        $result[$get->id]["favorite"] = "true";
+                        break;
+                    } else {
+                        $result[$get->id]["favorite"] = "false";
+                    }
+                }
+            }
+        }
+        return $result;
     }
 }

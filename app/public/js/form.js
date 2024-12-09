@@ -7,6 +7,8 @@ if (path.endsWith("detail")) {
     mypage();
 } else if (path.endsWith("search")) {
     song_search();
+} else if (path.endsWith("user_searchResult")) {
+    user_search();
 }
 
 //マイページ処理
@@ -20,6 +22,37 @@ function mypage() {
             document.forms.form.submit(); /*submit処理を行う*/
         }
     });
+
+    let user_list = document.querySelectorAll(".user_list")
+    //ユーザがお気に入りしているかどうかをロード時にチェック
+
+    user_list.forEach(function (list) {
+        let favorite_btn = list.querySelector(".favorite")
+
+        if (favorite_btn.classList.contains("true")) favorite_btn.textContent = "★"
+        if (favorite_btn.classList.contains("false")) favorite_btn.textContent = "☆"
+
+        /*ユーザーをお気に入り登録する。*/
+        favorite_btn.addEventListener("click", function () {
+            let request = new FormData();
+            request.append("id", favorite_btn.id);
+            if (favorite_btn.classList.contains("false")) {
+                let url = "/user_searchResult/favorite"
+                ajax("post", request, url, function () {
+                    favorite_btn.textContent = "★"
+                    favorite_btn.classList.remove("false")
+                    favorite_btn.classList.add("true")
+                })
+            } else if (favorite_btn.classList.contains("true")) {
+                let url = "/user_searchResult/favoriteDelete"
+                ajax("post", request, url, function () {
+                    favorite_btn.textContent = "☆"
+                    favorite_btn.classList.remove("true")
+                    favorite_btn.classList.add("false")
+                })
+            }
+        })
+    })
 }
 
 //詳細ページ処理
@@ -40,7 +73,7 @@ function detail() {
         let audio = change_flg.querySelector(".audio_list")
 
         //audioファイルがない時表示しないように
-        audio.addEventListener("error", function() {
+        audio.addEventListener("error", function () {
             audio.remove()
         })
 
@@ -54,7 +87,6 @@ function detail() {
                 //ボタンを非活性に
                 var formData = new FormData();
                 formData.append("id", user_id);
-                console.log(user_id)
                 delete_button.disabled = true;
                 change_flg.querySelector(".btn-warning").disabled = true;
                 ajax('post', formData, destroy_url, function () {
@@ -95,7 +127,7 @@ function detail() {
                     change_flg.querySelector(".point_list").textContent = "点数:" + point
                     change_flg.querySelector(".comment_list").textContent = comment
                     if (!(audio_path === null)) audio.setAttribute("src", 'http://localhost/storage/audio/' + audio_path)
-                    if (modal.classList.contains("show"))$(modal).modal('hide');
+                    if (modal.classList.contains("show")) $(modal).modal('hide');
                 })
             }
         });
@@ -175,6 +207,42 @@ function song_search() {
             $(this).val($(this).attr('min'))
     });
 }
+
+//ユーザー検索ページ処理
+function user_search() {
+    let user_list = document.querySelectorAll(".user_list")
+    //ユーザがお気に入りしているかどうかをロード時にチェック
+
+    user_list.forEach(function (list) {
+        let favorite_btn = list.querySelector(".favorite")
+
+
+        if (favorite_btn.classList.contains("true")) favorite_btn.textContent = "★"
+        if (favorite_btn.classList.contains("false")) favorite_btn.textContent = "☆"
+
+        /*ユーザーをお気に入り登録する。*/
+        favorite_btn.addEventListener("click", function () {
+            let request = new FormData();
+            request.append("id", favorite_btn.id);
+            if (favorite_btn.classList.contains("false")) {
+                let url = "/user_searchResult/favorite"
+                ajax("post", request, url, function () {
+                    favorite_btn.textContent = "★"
+                    favorite_btn.classList.remove("false")
+                    favorite_btn.classList.add("true")
+                })
+            } else if (favorite_btn.classList.contains("true")) {
+                let url = "/user_searchResult/favoriteDelete"
+                ajax("post", request, url, function () {
+                    favorite_btn.textContent = "☆"
+                    favorite_btn.classList.remove("true")
+                    favorite_btn.classList.add("false")
+                })
+            }
+        })
+    })
+}
+
 
 //非同期通信用関数
 function ajax(type, request, url, func) {
