@@ -40,7 +40,8 @@ class SpotifyController extends Controller
             return [
                 'artist' => $artist->artists["0"]->name,
                 'name' => $artist->name,
-                'track_id' => $artist->id
+                'track_id' => $artist->id,
+                'jacket' => $artist->album->images["0"]->url
             ];
         });
     }
@@ -63,16 +64,10 @@ class SpotifyController extends Controller
             return [
                 'artist' => $artist->artists["0"]->name,
                 'name' => $artist->name,
-                'track_id' => $artist->id
+                'track_id' => $artist->id,
+                'jacket' => $artist->album->images["0"]->url
             ];
         });
-    }
-
-    public function suggest_song()
-    {
-
-
-        return;
     }
     //
 }

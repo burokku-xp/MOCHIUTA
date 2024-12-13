@@ -12,7 +12,7 @@
                         @csrf
                         <div class="form-row ">
                             <div class="form-group col my-4">
-                                <label for="email">{{ __('ユーザー名またはメールアドレス入力') }}</label>
+                                <label for="email">{{ __('メールアドレス入力') }}</label>
                                 <div>
                                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 

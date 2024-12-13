@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-
+    <link href="{{ asset('/css/app.css') }}" rel="stylesheet" type="text/css">
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -48,15 +48,22 @@
         <nav class="navbar navbar-dark" style="background-color:#ee7800">
             <div>
                 <a class="my-navbar-item text-light link-offset-3-hover link-underline link-underline-dark link-underline-opacity-0 link-underline-opacity-75-hover"
-                    href="{{ url('/mypage')}}">マイページ</a>
+                    href="{{ url('/mypage') }}">マイページ</a>
                 <a class="my-navbar-item text-light link-offset-3-hover link-underline link-underline-dark link-underline-opacity-0 link-underline-opacity-75-hover"
-                    data-bs-toggle="collapse" data-bs-target="#navbarTogglerUserSearch" aria-controls="navbarTogglerUserSearch" aria-expanded="false" aria-label="Toggle navigation" href="#">ユーザー検索</a>
+                    data-bs-toggle="collapse" data-bs-target="#navbarTogglerUserSearch"
+                    aria-controls="navbarTogglerUserSearch" aria-expanded="false" aria-label="Toggle navigation"
+                    href="#">ユーザー検索</a>
                 <div class="collapse navbar-collapse" id="navbarTogglerUserSearch">
-                    <form class="d-flex" role="search" action="{{ route('user.searchResult')}}" method="post">
-                        @csrf
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="userSearch">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
+                    <div class="d-flex align-middle column-gap-3">
+                        <form class="d-flex" role="search" action="{{ route('user.searchResult') }}" method="post" onsubmit="return false;">
+                            @csrf
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                                name="userSearch">
+                            <button class="btn btn-success usersearch_btn" type="button">Search</button>
+                        </form>
+                        <div id="userseach_result" class="column-gap-3 d-flex">
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -66,5 +73,6 @@
     </div>
     <script src="{{ asset('/js/form.js') }}"></script>
 </body>
+
 
 </html>

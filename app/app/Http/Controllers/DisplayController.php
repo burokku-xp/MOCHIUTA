@@ -27,15 +27,21 @@ class DisplayController extends Controller
 
         //お気に入りユーザーと公開リスト
         $favorite_user_data = Auth::user()->favorite_user()->get()->toArray();
-        $favorite_user = new User();
-        $favorite_user = $favorite_user->mypage($favorite_user_data);
+        if (!(empty($favorite_user_data))) {
+            $favorite_user = new User();
+            $favorite_user = $favorite_user->mypage($favorite_user_data);
 
-        $song_list = new Song_list;
-        $favorite_user = $song_list->user_listSearch($favorite_user);
+            $song_list = new Song_list;
+            $favorite_user = $song_list->user_listSearch($favorite_user);
 
-        //ログインユーザーへのおすすめ楽曲
-        $suggest_song = new SpotifyController;
-        $suggest_song = $suggest_song->suggest_song();
+            foreach ($favorite_user as $list) {
+                if (empty($list["list_content"])) {
+                    $favorite_user[$list["user_id"]]["list_content"] = [];
+                }
+            }
+        } else {
+            $favorite_user = [];
+        }
 
         return view('mypage', [
             'song_list' => $songListAll,
@@ -43,14 +49,46 @@ class DisplayController extends Controller
         ]);
     }
 
+    public function fetchFavoriteUsers()
+    {
+        $favorite_user_data = Auth::user()->favorite_user()->get()->toArray();
+        if (!(empty($favorite_user_data))) {
+            $favorite_users = new User();
+            $favorite_users = $favorite_users->mypage($favorite_user_data);
+
+            $song_list = new Song_list;
+            $favorite_users = $song_list->user_listSearch($favorite_users);
+
+            foreach ($favorite_users as $list) {
+                if (empty($list["list_content"])) {
+                    $favorite_users[$list["user_id"]]["list_content"] = [];
+                }
+            }
+        } else {
+            $favorite_users = [];
+        }
+        return view('partials.favorite_users', compact('favorite_users'))->render();
+    }
+
     public function songDetail(Song_list $song_list)
     {
         $list_content = new List_content;
         $list_content = $list_content->songDetail($song_list);
-        return view('song_detail', [
-            'list_contents' => $list_content,
-            'song_detail' => $song_list
-        ]);
+        $private = $song_list->is_private;
+        if ($private === 0) {
+            return view('song_detail', [
+                'list_contents' => $list_content,
+                'song_detail' => $song_list
+            ]);
+        } else {
+            if (Auth::id() === $song_list->user_id) {
+                return view('song_detail', [
+                    'list_contents' => $list_content,
+                    'song_detail' => $song_list
+                ]);
+            }
+            return redirect()->route('mypage');
+        }
     }
 
     public function userSearchList(Song_list $song_list)
@@ -58,10 +96,21 @@ class DisplayController extends Controller
         $list_content = new List_content;
         $list_content = $list_content->searchUserListDetail($song_list);
 
-        return view('user_searchlist', [
-            'list_contents' => $list_content,
-            'song_detail' => $song_list
-        ]);
+        $private = $song_list->is_private;
+        if ($private === 0) {
+            return view('user_searchlist', [
+                'list_contents' => $list_content,
+                'song_detail' => $song_list
+            ]);
+        } else {
+            if (Auth::id() === $song_list->user_id) {
+                return view('user_searchlist', [
+                    'list_contents' => $list_content,
+                    'song_detail' => $song_list
+                ]);
+            }
+            return redirect()->route('mypage');
+        }
     }
 
     public function songSearch(Song_list $song_list, Request $request)
@@ -87,20 +136,6 @@ class DisplayController extends Controller
         return view('song_searchResult', [
             'song_searchs' => $artist_search,
             'id' => $id
-        ]);
-    }
-
-    public function userSearchResult(Request $request)
-    {
-        $user_name = $request->userSearch;
-        $user_search = new User;
-        $user_search = $user_search->user_search($user_name);
-
-        $song_list = new Song_list;
-        $user_search = $song_list->user_listSearch($user_search);
-
-        return view('user_searchResult', [
-            'user_searchs' => $user_search
         ]);
     }
     //

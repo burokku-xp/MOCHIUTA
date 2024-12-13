@@ -26,22 +26,18 @@
 
 <body>
     <div class="w-100 vh-100 position-relative video-wrapper">
-        <video class="w-100 vh-100 object-fit-cover position-absolute top-0 left-0" src="{{asset('storage/title.mp4')}}" muted autoplay loop></video>
+        <video class="w-100 vh-100 object-fit-cover position-absolute top-0 left-0"
+            src="{{ asset('storage/title.mp4') }}" muted autoplay loop></video>
         <div class="position-absolute top-50 start-50 translate-middle">
-            <img src="{{asset('storage/logo_transparent.png')}}">
+            <img src="{{ asset('storage/logo_transparent.png') }}">
             <div class="d-flex justify-content-center">
-                <a href="{{ route('mypage')}}">
+                <a href="{{ route('mypage') }}">
                     <button type="button" class="btn btn-primary">ログイン</button>
                 </a>
             </div>
             <div class="d-flex justify-content-center">
                 <a href="{{ route('register') }}">
                     新規登録はコチラ
-                </a>
-            </div>
-            <div class="d-flex justify-content-center">
-                <a href="{{ route('test') }}">
-                    テスト用
                 </a>
             </div>
         </div>

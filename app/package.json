@@ -15,6 +15,7 @@
     },
     "dependencies": {
         "bootstrap-honoka": "^4.4.0",
+        "datatables.net-responsive": "^3.0.3",
         "jquery": "^3.7.1"
     }
 }

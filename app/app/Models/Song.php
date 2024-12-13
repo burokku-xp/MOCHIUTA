@@ -30,15 +30,4 @@ class Song extends Model
             return $this->where('name', $name)->where('artist', $artist)->first()->id;
         }
     }
-
-    public function suggest_song($list_contents)
-    {
-        //ユーザーの登録している全楽曲から重複無しでランダムに5曲選出
-        $list_contents = collect($list_contents)->flatten()->unique();
-        $list_contents = $list_contents->random(min(5, count($list_contents)))->toArray();
-        foreach ($list_contents as $list_content) $suggest_song_paths[] = $this->where("id", $list_content)->select("path")->get()->flatten()->toArray();
-        foreach ($suggest_song_paths as $suggest_song_path) $path[] = $suggest_song_path[0]["path"];
-        $path = collect($path)->map(fn($item) => "'{$item}'")->implode(',');
-        return $path;
-    }
 }

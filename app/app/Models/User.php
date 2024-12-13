@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -65,23 +66,33 @@ class User extends Authenticatable
     public function user_search($user_name)
     {
         //ユーザー名部分一致検索
-        $user_search = $this->where("role", "1")->where("name", "LIKE", "%" . $user_name . "%");
-        $names = $user_search->get();
-        $favorite_user = Auth::user()->Favorite_user()->get();
-        foreach ($names as $name) {
-            $data[$name->id]["user_id"] = $name->id;
-            $data[$name->id]["user_name"] = $name->name;
-            $data[$name->id]["favorite"] = "false";
-            foreach ($favorite_user as $favorite) {
-                if ($name->id === $favorite->favoriteuser_id) {
-                    $data[$name->id]["favorite"] = "true";
-                    break;
-                } else {
-                    $data[$name->id]["favorite"] = "false";
+        $user_search = $this->where([
+            ["role", "1"],
+            ["name", "LIKE", "%" . $user_name . "%"],
+            ["id", "!=", Auth::id()]
+        ]);
+        $names = $user_search->take(5)->get();
+
+        if ($names->isEmpty()) {
+            return null;
+        } else {
+            $favorite_user = Auth::user()->Favorite_user()->get();
+            foreach ($names as $name) {
+                $data[$name->id]["user_id"] = $name->id;
+                $data[$name->id]["user_name"] = $name->name;
+                $data[$name->id]["favorite"] = "false";
+                $data[$name->id]["list_content"] = [];
+                foreach ($favorite_user as $favorite) {
+                    if ($name->id === $favorite->favoriteuser_id) {
+                        $data[$name->id]["favorite"] = "true";
+                        break;
+                    } else {
+                        $data[$name->id]["favorite"] = "false";
+                    }
                 }
             }
+            return $data;
         }
-        return $data;
     }
 
     public function mypage($favorite_user_data)

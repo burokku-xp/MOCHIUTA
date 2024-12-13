@@ -24,11 +24,19 @@ class RegistrationController extends Controller
         return redirect('/mypage');
     }
 
+    public function listDelete(Song_list $song_list)
+    {
+        $songList = new Song_list;
+        $songList = $songList->list_delete($song_list);
+
+        return redirect()->route('mypage');
+    }
+
     public function listContentRegist(Song_list $song_list, ListData $request)
     {
         // 登録する曲がsongsテーブルに登録されているかのチェック→登録なければ登録してIDを拾う／あればそのままIDを拾う
         $songRegist = new Song();
-        $songRegist['song_id'] = $songRegist->songRegist($request->name, $request->artist ,$request->track_id);
+        $songRegist['song_id'] = $songRegist->songRegist($request->name, $request->artist, $request->jacket);
         $songRegist['list_id'] = $song_list->id;
         if (!($request->file('mp3_data') === null)) {
             //音声ファイル名をハッシュ化してパスを取得し保存

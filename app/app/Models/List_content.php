@@ -36,7 +36,7 @@ class List_content extends Model
     {
         return $this::join('songs', 'list_contents.song_id', '=', 'songs.id')
             ->where('list_id', $song_list->id)
-            ->select('list_contents.id', 'points', 'comment', 'music_data_path', 'songs.id as song_id', 'songs.name', 'songs.artist')
+            ->select('list_contents.id', 'points', 'comment', 'music_data_path', 'songs.id as song_id', 'songs.name', 'songs.artist', 'songs.path')
             ->get();
     }
 
@@ -44,14 +44,14 @@ class List_content extends Model
     {
         return $this::join('songs', 'list_contents.song_id', '=', 'songs.id')
             ->where('list_id', $song_list->id)
-            ->select('list_contents.id', 'points', 'music_data_path', 'songs.id as song_id', 'songs.name', 'songs.artist')
+            ->select('list_contents.id', 'points', 'music_data_path', 'songs.id as song_id', 'songs.name', 'songs.artist', 'songs.path')
             ->get();
     }
 
     public function searchUserDetail($song_list)
     {
         return $this::join('songs', 'list_contents.song_id', '=', 'songs.id')
-        ->where('list_id', $song_list->id)
+            ->where('list_id', $song_list->id)
             ->select('list_contents.id', 'points', 'comment', 'music_data_path', 'songs.id as song_id', 'songs.name', 'songs.artist')
             ->get();
     }

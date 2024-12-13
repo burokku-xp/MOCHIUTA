@@ -22,11 +22,11 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 */
 
 Route::get('/', [DisplayController::class, 'title'])->name('title');
-Route::get('/test', [Testcontroller::class, 'test'])->name('test');
 
 Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/mypage', [DisplayController::class, 'mypage'])->name('mypage');
+    Route::get('/favorite-users', [DisplayController::class, 'fetchFavoriteUsers'])->name('favorite-users.partial');
     Route::post('/mypage', [RegistrationController::class, 'listRegist'])->name('list.Regist');
 
     Route::group(['middleware' => 'can:view,song_list'], function () {
@@ -34,15 +34,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/song_searchResult/{song_list}/search', [DisplayController::class, 'songSearch'])->name("song.search");
         Route::post('/artist_searchResult/{song_list}/search', [DisplayController::class, 'artistSearch'])->name("artist.search");
         Route::post('/song_list/{song_list}/detail', [RegistrationController::class, 'listContentRegist'])->name("song.regist");
+        Route::post('/song_list/{song_list}/delete', [RegistrationController::class, 'listDelete'])->name("list.delete");
     });
 
     Route::post('/song_destroy', [AjaxController::class, 'songDestroy'])->name("song.destroy");
     Route::post('/song_edit', [AjaxController::class, 'songEdit'])->name("song.edit");
-    Route::post('/user_searchResult', [DisplayController::class, 'userSearchResult'])->name("user.searchResult");
+    Route::post('/user_searchResult', [AjaxController::class, 'userSearchResult'])->name("user.searchResult");
     Route::get('/user_searchResult/{song_list}', [DisplayController::class, 'userSearchList'])->name("search.list");
     Route::post('/user_searchResult/favorite', [AjaxController::class, 'favoriteUser']);
     Route::post('/user_searchResult/favoriteDelete', [AjaxController::class, 'favoriteUserDelete']);
 });
-
-Route::post('/test', [TestController::class, 'test'])->name("test");
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
