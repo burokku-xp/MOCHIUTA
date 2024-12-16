@@ -15,3 +15,13 @@ php artisan storage:link
 chown www-data storage/ -R
 
 php artisan cache:clear
+
+npm install
+npm run build
+
+cd /usr/local/etc/php
+
+cp php.ini-development php.ini
+sed -i 's|^session.save_path = .*$|session.save_path = "/var/www/html/storage/framework/sessions"|' /usr/local/etc/php/php.ini
+
+php atrisan migrate

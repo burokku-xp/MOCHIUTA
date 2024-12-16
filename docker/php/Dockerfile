@@ -15,3 +15,9 @@ RUN apt-get update && apt-get install -y \
 
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
+
+# 権限の付与
+# RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+#    chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# RUN php artisan key:generate
