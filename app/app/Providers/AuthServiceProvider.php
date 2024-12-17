@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         'App\Models\Song_list' => 'App\Policies\Song_listPolicy',
-        'App\Post' => 'App\Policies\PubliclistPolicy',
+        'App\Models\Post' => 'App\Policies\PubliclistPolicy',  // Post モデルのポリシーも確認
     ];
 
     /**
@@ -22,6 +22,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->registerPolicies();
         //
     }
 }

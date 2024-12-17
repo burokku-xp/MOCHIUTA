@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use SpotifyWebAPI\SpotifyWebAPI;
+use SpotifyWebAPI\Session;
+use SpotifyWebAPI\SpotifyWebAPIException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use SpotifyWebAPI\SpotifyWebApi;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Crypt;
 use SpotifyWebAPI\Request as SpotifyWebAPIRequest;
@@ -35,14 +37,8 @@ class AccessTokenController extends Controller
 
         $response = $client->post('https://accounts.spotify.com/api/token', $options);
         $access_token = json_decode($response->getBody())->access_token;
-        $encrypted_access_token = Crypt::encryptString($access_token);
-        session(['access_token' => $encrypted_access_token]);
-        /*暗号化*/
-        $session_access_token = session('access_token');
-        /*復号*/
-        $decrypted_access_token = Crypt::decryptString($session_access_token);
         $api = new SpotifyWebAPI();
-        $api = $api->setAccessToken($decrypted_access_token);
+        $api = $api->setAccessToken($access_token);
         return $api;
     }
     //

@@ -6,7 +6,7 @@ use App\Models\Song_list;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class song_listPolicy
+class Song_listPolicy
 {
     /**
      * Determine whether the user can view any models.
