@@ -20,6 +20,11 @@ RUN apt-get update && apt-get install -y \
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - 
 RUN apt-get install -y nodejs
 
+# php.ini の設定ファイルを作成
+RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini && \
+    sed -i 's/post_max_size = .*/post_max_size = 200M/' /usr/local/etc/php/php.ini && \
+    sed -i 's/upload_max_filesize = .*/upload_max_filesize = 200M/' /usr/local/etc/php/php.ini
+
 # Composerを使ってSpotifyのPHPライブラリをインストール
 WORKDIR /var/www/html
 

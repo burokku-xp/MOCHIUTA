@@ -28,26 +28,35 @@ services:
       - db
     command: |
       bash -c "
-        chown -R www-data:www-data /var/www/html && chmod -R 777 /var/www/html && \
-        # MySQL サーバーが起動するまでリトライ
-        until mysql -h db -u root -proot -e 'SELECT 1'; do
-          echo 'Waiting for MySQL to be ready...'
-          sleep 2
-        done && \
-        # MySQL サーバーが準備できたら、データベース作成、マイグレーションを実行
-        npm install sass@latest && \
-        mysql -h db -u root -proot -e 'CREATE DATABASE IF NOT EXISTS laravel;' && \
-        composer install && \
-        composer update && \
-        composer dump-autoload && \
-        php artisan key:generate && \
-        php artisan storage:link && \
-        chown -R www-data storage/ && \
-        php artisan cache:clear && \
-        npm install && \
-        npm run build && \
-        php artisan migrate --force --no-interaction && \
-        php-fpm"
+      # .envファイルが存在しない場合の処理
+      if [ ! -f /var/www/html/.env ]; then
+        echo '.env file not found. Creating from .env.example...' && \
+        cp /var/www/html/.env.example /var/www/html/.env && \
+        sed -i 's/DB_HOST=.*/DB_HOST=db/' /var/www/html/.env && \
+        sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=root/' /var/www/html/.env && \
+        php artisan key:generate;
+      else
+        echo '.env file already exists.';
+      fi
+
+      # MySQLの準備を待つ
+      until mysql -h db -u root -proot -e 'SELECT 1'; do
+        echo 'Waiting for MySQL to be ready...'
+        sleep 2
+      done
+
+      # Laravelのマイグレーションとビルド
+      npm install sass@latest && \
+      composer install && \
+      composer update && \
+      composer dump-autoload && \
+      php artisan storage:link && \
+      chown -R www-data storage/ && \
+      php artisan cache:clear && \
+      npm install && \
+      npm run build && \
+      php artisan migrate --force --no-interaction && \
+      php-fpm"
     networks:
       - backend
     tty: true
