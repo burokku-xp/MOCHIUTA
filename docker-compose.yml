@@ -33,8 +33,7 @@ services:
         echo '.env file not found. Creating from .env.example...' && \
         cp /var/www/html/.env.example /var/www/html/.env && \
         sed -i 's/DB_HOST=.*/DB_HOST=db/' /var/www/html/.env && \
-        sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=root/' /var/www/html/.env && \
-        php artisan key:generate;
+        sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=root/' /var/www/html/.env \
       else
         echo '.env file already exists.';
       fi
@@ -50,6 +49,7 @@ services:
       composer install && \
       composer update && \
       composer dump-autoload && \
+      php artisan key:generate && \
       php artisan storage:link && \
       chown -R www-data storage/ && \
       php artisan cache:clear && \
