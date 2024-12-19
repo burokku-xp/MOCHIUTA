@@ -33,11 +33,10 @@ services:
         echo '.env file not found. Creating from .env.example...' && \
         cp /var/www/html/.env.example /var/www/html/.env && \
         sed -i 's/DB_HOST=.*/DB_HOST=db/' /var/www/html/.env && \
-        sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=root/' /var/www/html/.env \
+        sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=root/' /var/www/html/.env
       else
         echo '.env file already exists.';
       fi
-
       # MySQLの準備を待つ
       until mysql -h db -u root -proot -e 'SELECT 1'; do
         echo 'Waiting for MySQL to be ready...'
